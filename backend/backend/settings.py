@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'channels',
     'user_api.apps.UserApiConfig',
 ]
 
@@ -189,3 +190,20 @@ CSRF_COOKIE_HTTPONLY = False    # Should generally be False to allow JavaScript 
 CSRF_COOKIE_SECURE = False       # Non-Production Port 80
 
 
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
+
+ASGI_APPLICATION = 'backend.routing.application'

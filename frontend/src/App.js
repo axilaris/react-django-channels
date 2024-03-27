@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie';
 
+import Websocket from 'react-websocket';
+
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
@@ -37,6 +39,9 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [message, setMessage] = useState(null);
+
+  
   useEffect(() => {
 
     client.get("/api/user")
@@ -47,6 +52,33 @@ function App() {
       setCurrentUser(false);
     });
     
+
+//////
+
+
+    const ws = new WebSocket('ws://localhost:8000/ws/notification/');
+
+    ws.onopen = () => {
+      console.log('Connected to notification websocket');
+    };
+
+    ws.onmessage = e => {
+      const data = JSON.parse(e.data);
+      setMessage(data.message);
+    };
+
+    ws.onerror = e => {
+      console.error('WebSocket error', e);
+    };
+
+    ws.onclose = e => {
+      console.error('WebSocket closed', e);
+    };
+
+    return () => {
+      ws.close();
+    };
+
 
 
   }, []);
@@ -147,7 +179,8 @@ function App() {
     );
   }
   return (
-    <div>
+    <div>    
+      {message && <p>{message}</p>}
     <Navbar bg="dark" variant="dark">
       <Container>
         <Navbar.Brand>React Django</Navbar.Brand>
