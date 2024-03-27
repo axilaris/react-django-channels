@@ -56,7 +56,7 @@ function App() {
 //////
 
 
-    const ws = new WebSocket('ws://localhost:8000/ws/notification/');
+    const ws = new WebSocket('ws://localhost:8000/ws/notifications/');
 
     ws.onopen = () => {
       console.log('Connected to notification websocket');

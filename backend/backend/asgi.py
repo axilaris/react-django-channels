@@ -23,10 +23,16 @@ import user_api.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": URLRouter(
-        user_api.routing.websocket_urlpatterns
-        #backend.routing.websocket_urlpatterns
-    ),
-})
+# application = ProtocolTypeRouter({
+#     "http": get_asgi_application(),
+#     "websocket": URLRouter(
+#         user_api.routing.websocket_urlpatterns
+#         #backend.routing.websocket_urlpatterns
+#     ),
+# })
+
+application = ProtocolTypeRouter({     
+            "websocket": URLRouter([         
+                path("/ws/notifications/", consumers.NotificationConsumer.as_asgi()),     
+                ]), 
+            }) 

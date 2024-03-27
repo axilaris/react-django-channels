@@ -206,4 +206,7 @@ CHANNEL_LAYERS = {
     }
 }
 
+#ASGI_APPLICATION = "user_api.asgi.application"
+#ASGI_APPLICATION = "backend.asgi.application"
+#ASGI_APPLICATION = "backend/backend/asgi.py"
 ASGI_APPLICATION = 'backend.routing.application'
