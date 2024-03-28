@@ -190,23 +190,16 @@ CSRF_COOKIE_HTTPONLY = False    # Should generally be False to allow JavaScript 
 CSRF_COOKIE_SECURE = False       # Non-Production Port 80
 
 
+ASGI_APPLICATION = 'user_api.routing.application'
+#ASGI_APPLICATION = "user_api.asgi.application"
+#ASGI_APPLICATION = "backend.asgi.application"
+#ASGI_APPLICATION = "backend/backend/asgi.py"
+#ASGI_APPLICATION = 'backend.routing.application'
+#ASGI_APPLICATION = 'user_api.routing.application'
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [('127.0.0.1', 6379)],
-#         },
-#     },
-# }
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'
     }
 }
-
-#ASGI_APPLICATION = "user_api.asgi.application"
-#ASGI_APPLICATION = "backend.asgi.application"
-#ASGI_APPLICATION = "backend/backend/asgi.py"
-ASGI_APPLICATION = 'backend.routing.application'
