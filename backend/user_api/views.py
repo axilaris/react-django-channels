@@ -36,7 +36,7 @@ class UserLogin(APIView):
             'notifications',  # Here 'notifications' is the group name that you have used in your consumer
             {
                 'type': 'notification_message',
-                'text': 'User logged in',
+                'text': 'test send',
             }
         )
 
