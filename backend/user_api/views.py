@@ -7,6 +7,9 @@ from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 import logging
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 class UserRegister(APIView):
 	permission_classes = (permissions.AllowAny,)
 	def post(self, request):
@@ -26,14 +29,26 @@ class UserLogin(APIView):
 	def post(self, request):
 		print("YYY UserLogin")
 		logging.debug("XXX UserLogin")
-		data = request.data
-		assert validate_email(data)
-		assert validate_password(data)
-		serializer = UserLoginSerializer(data=data)
-		if serializer.is_valid(raise_exception=True):
-			user = serializer.check_user(data)
-			login(request, user)
-			return Response(serializer.data, status=status.HTTP_200_OK)
+
+		#XXX send notification to React
+		channel_layer = get_channel_layer()
+		async_to_sync(channel_layer.group_send)(
+            'notifications',  # Here 'notifications' is the group name that you have used in your consumer
+            {
+                'type': 'notification_message',
+                'text': 'User logged in',
+            }
+        )
+
+		return Response({"email": "a@gmail.com"}, status=status.HTTP_200_OK)
+		# data = request.data
+		# assert validate_email(data)
+		# assert validate_password(data)
+		# serializer = UserLoginSerializer(data=data)
+		# if serializer.is_valid(raise_exception=True):
+		# 	user = serializer.check_user(data)
+		# 	login(request, user)
+		# 	return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class UserLogout(APIView):
@@ -54,8 +69,9 @@ class UserView(APIView):
 	def get(self, request):
 		print("YYY UserView")
 		logging.debug("XXX UserView")
-		serializer = UserSerializer(request.user)
-		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+		return Response({'user': "a@gmail.com"}, status=status.HTTP_200_OK)
+		# serializer = UserSerializer(request.user)
+		# return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
 
 
