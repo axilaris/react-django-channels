@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie';
 
 import Websocket from 'react-websocket';
+import { useWebSocket } from 'react-websocket';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -40,8 +41,8 @@ function App() {
   const [password, setPassword] = useState('');
 
   const [message, setMessage] = useState(null);
-
   
+ 
   useEffect(() => {
 
     client.get("/api/user")
@@ -63,6 +64,7 @@ function App() {
     };
 
     ws.onmessage = e => {
+      console.log('onmessage:' + e.data);
       const data = JSON.parse(e.data);
       setMessage(data.message);
     };
